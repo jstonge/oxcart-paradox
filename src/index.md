@@ -1,6 +1,6 @@
 ---
 sql:
-    AusData: aus.parquet
+    UnitedStates: US.parquet
     data: OxCGRT_compact_national_v1.parquet
     metadata: metadata.parquet
 ---
@@ -58,7 +58,7 @@ const time = Generators.input(timeInput);
 
 <br>
 
-## National compact data
+## National compact data table
 
 ```sql id=[...raw_data]
 SELECT * FROM data
@@ -88,7 +88,63 @@ ORDER BY date
 ```js
 const world = FileAttachment("countries-50m.json").json()
 ```
+
 ```js
 const countries = topojson.feature(world, world.objects.countries)
 const countrymesh = topojson.mesh(world, world.objects.countries, (a, b) => a !== b)
+```
+
+
+## United States
+
+```js
+const selectInput2 = Inputs.select(policyTypesUS);
+const select2 = Generators.input(selectInput2);
+```
+
+```js
+const timeInput2 = Inputs.date({label: "Day", value: "2021-09-21"});
+const time2 = Generators.input(timeInput2);
+```
+
+```sql id=[...filteredData_us]
+SELECT RegionName, Date, PolicyType, PolicyValue 
+FROM UnitedStates
+WHERE PolicyType = ${select2}
+AND Date = ${time2.toISOString().slice(0, 10)}
+```
+
+<div>
+    We first choose among policy types
+    ${selectInput2}
+    <br>
+    Then day
+    ${timeInput2}
+</div>
+
+```js
+Plot.plot({
+  projection: "albers-usa",
+  color: {scheme: "YlGnBu", unknown: "#ccc", label: "Policy Value", legend: true},
+  marks: [
+     Plot.geo(states, {stroke: "black",
+        fill: (map => d => map.get(d.properties.name))(new Map(filteredData_us.map(d => [d.RegionName, d.PolicyValue]))),
+        }),
+    Plot.geo(countrymesh, {stroke: "white"}),
+  ]
+})
+```
+
+```js
+const us = FileAttachment("us-counties-10m.json").json()
+const nation = topojson.feature(us, us.objects.nation)
+const states = topojson.feature(us, us.objects.states).features
+```
+
+```sql id=[...UnitedStates]
+SELECT * FROM UnitedStates
+```
+
+```js
+const policyTypesUS = new Set(UnitedStates.map(d=>d.PolicyType))
 ```
