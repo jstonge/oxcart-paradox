@@ -5,15 +5,13 @@ import numpy as np
 import pyarrow as pa
 import pyarrow.parquet as pq
 
-df=pd.read_csv("https://raw.githubusercontent.com/OxCGRT/covid-policy-dataset/main/data/OxCGRT_compact_national_v1.csv")
+URL = "https://catalog.ourworldindata.org/garden/covid/latest/cases_deaths/cases_deaths.csv"
 
-df_meta = df[['ConfirmedDeaths', 'ConfirmedCases', 'Date']].groupby('Date').sum().reset_index()
-
-df_meta['DailyCases'] = df_meta['ConfirmedCases'].diff().fillna(0)
-
+df=pd.read_csv(URL)
+df = df[['date', 'new_cases']]
 # Write DataFrame to a temporary file-like object
 buf = pa.BufferOutputStream()
-table = pa.Table.from_pandas(df_meta)
+table = pa.Table.from_pandas(df)
 pq.write_table(table, buf, compression="snappy")
 
 # Get the buffer as a bytes object
