@@ -1,0 +1,7 @@
+pandas==2.2.0
+pyarrow==16.1
+requests
+xlrd
+topojson
+geojson
+geopandas
