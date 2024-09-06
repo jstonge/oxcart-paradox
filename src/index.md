@@ -115,10 +115,9 @@ AND Date = ${time2.toISOString().slice(0, 10)}
 ```
 
 <div>
-    We first choose among policy types
-    ${selectInput2}
+    Choose among policy types and day (you can click on date to toggle with keyboard)
     <br>
-    Then day
+    ${selectInput2}
     ${timeInput2}
 </div>
 
@@ -137,7 +136,13 @@ Plot.plot({
 
 ```js
 const us = FileAttachment("us-counties-10m.json").json()
+```
+
+```js
 const nation = topojson.feature(us, us.objects.nation)
+```
+
+```js
 const states = topojson.feature(us, us.objects.states).features
 ```
 
