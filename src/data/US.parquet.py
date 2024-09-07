@@ -5,6 +5,7 @@ import numpy as np
 import pyarrow as pa
 import pyarrow.parquet as pq
 
+# state and national
 df=pd.read_csv("https://raw.githubusercontent.com/OxCGRT/covid-policy-dataset/main/data/OxCGRT_compact_subnational_v1.csv")
 
 df = df[df['CountryName'] == 'United States']

@@ -23,6 +23,8 @@ df['V2C_Vaccine age eligibility/availability age floor (at risk summary)'] = df[
 
 df['Date'] = df.Date.astype(str).map(lambda x: x[:4] + '-' + x[4:6] + '-' + x[6:])
 
+df.CountryName.replace({'United States': 'United States of America'}, inplace=True)
+
 df_long = df.melt(id_vars=['CountryName', 'Jurisdiction', 'Date'], var_name='PolicyType', value_name='PolicyValue')
 
 # Write DataFrame to a temporary file-like object

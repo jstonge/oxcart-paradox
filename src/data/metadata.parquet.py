@@ -8,7 +8,7 @@ import pyarrow.parquet as pq
 URL = "https://catalog.ourworldindata.org/garden/covid/latest/cases_deaths/cases_deaths.csv"
 
 df=pd.read_csv(URL)
-df = df[['date', 'new_cases']]
+df = df[['date', 'new_cases', 'country']]
 # Write DataFrame to a temporary file-like object
 buf = pa.BufferOutputStream()
 table = pa.Table.from_pandas(df)
