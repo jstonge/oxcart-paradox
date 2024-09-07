@@ -6,6 +6,7 @@ sql:
     metadata: ./data/metadata.parquet
 ---
 
+
 # United States
 
 ```js
@@ -44,9 +45,11 @@ Plot.plot({
         height: width / 2.4,
   projection: "albers-usa",
   color: {
-    scheme: "YlGnBu", unknown: "#ccc", 
+    scheme: "YlGnBu", 
+    unknown: "#ccc", 
     label: "Policy Value", legend: true, 
-    domain: [0, Policy2Val.get(select)]
+    domain: [0, Policy2Val.get(select)],
+    range: [0,0.95]
 },
   marks: [
      Plot.geo(states, {stroke: "black",
@@ -56,6 +59,7 @@ Plot.plot({
 })
 )}
 </div>
+
 
 ```sql id=[...metadata]
 SELECT SUM(new_cases) as new_cases, date 

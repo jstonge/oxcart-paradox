@@ -46,16 +46,18 @@ const time = Generators.input(timeInput);
     width,
     height: width / 2.4,
     color: {
-        scheme: "YlGnBu", unknown: "#ccc", 
+        scheme: "YlGnBu", 
+        unknown: "#ccc", 
         label: "Policy Value", legend: true,
-        domain: [0, Policy2Val.get(select)]
+        domain: [0, Policy2Val.get(select)],
+        range: [0, 0.9]
     } ,
     marks: [
         Plot.sphere({stroke: "currentColor"}),
         Plot.geo(countries, {
-        fill: (map => d => map.get(d.properties.name))(new Map(filteredData.map(d => [d.CountryName, d.PolicyValue]))),
+            fill: (map => d => map.get(d.properties.name))(new Map(filteredData.map(d => [d.CountryName, d.PolicyValue])))
         }),
-        Plot.geo(countrymesh, {stroke: "white"}),
+        Plot.geo(countrymesh, {stroke: "black", strokeOpacity: 0.3}),
     ]
     }))}
 </div>
